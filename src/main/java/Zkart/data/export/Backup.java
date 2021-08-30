@@ -12,6 +12,8 @@ import Zkart.user.customer.CustomerRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Backup {
 
@@ -47,7 +49,8 @@ public class Backup {
 
 
     public void purchaseHistory () {
-        PurchaseHistoryBackup purchaseHistoryBackup = new PurchaseHistoryBackup();
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        executorService.execute(new PurchaseHistoryBackup());
     }
 
 
