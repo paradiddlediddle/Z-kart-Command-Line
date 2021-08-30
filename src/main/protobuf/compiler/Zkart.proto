@@ -1,0 +1,106 @@
+syntax = "proto2";
+package Zkart;
+
+option java_multiple_files = true;
+option java_package = "protobuilder";
+option java_outer_classname = "ZkartProtos";
+
+message Product {
+
+  required int64 id = 1;
+  required string category = 2;
+  required string brand = 3;
+  required string model = 4;
+  required int32 stock = 5;
+  required double price = 6;
+  optional double discountPrice = 7;
+
+}
+message LineItem {
+
+  required int64 id = 1;
+  required int64 invoiceID = 2;
+  required int64 productID = 3;
+  required int32 quantity = 4;
+  required double itemRate = 5;
+  required double lineItemTotal = 6;
+
+}
+message Invoice {
+
+  required int64 id = 1;
+  required string date = 2;
+  required int64 customerID = 3;
+  repeated LineItem lineItems = 4;
+  required double subTotal = 5;
+  optional double discount = 6;
+  required double total = 7;
+
+}
+message Deal {
+
+  required int64 id = 1;
+  optional string status = 2;
+  required string dealName = 3;
+  required string discountCode = 4;
+  required double discountPercent = 5;
+  required int32 ordersAfterDealExpires = 6;
+  optional int32 lastValidInvoiceNumber = 7;
+
+}
+message CartItem {
+
+  required int32 sNo = 1;
+  required int64 customerID = 2;
+  required int64 productID = 3;
+  required int32 quantity = 4;
+  required double productRate = 5;
+  required double lineTotal = 6;
+
+}
+message Customer {
+
+  required int64 id = 1;
+  required string name = 2;
+  required string email = 3;
+  required string password = 4;
+  optional int64 phoneNumber = 5;
+  repeated Deal deals = 6;
+  repeated CartItem cartItems = 7;
+  repeated Invoice orderHistory = 8;
+
+}
+message Admin {
+
+  required int64 id = 1;
+  required string name = 2;
+  required string email = 3;
+  required string password = 4;
+  optional int64 phoneNumber = 5;
+
+}
+message AdminsDB {
+
+  repeated Admin admins = 1;
+
+}
+message CustomersDB {
+
+  repeated Customer customers = 1;
+
+}
+message InventoryDB {
+
+  repeated Product products = 1;
+
+}
+message DealsDB {
+
+  repeated Deal deals = 1;
+
+}
+message Orders {
+
+  repeated Invoice invoices = 1;
+
+}
