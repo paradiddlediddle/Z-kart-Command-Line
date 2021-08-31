@@ -1,4 +1,5 @@
-  /** ABOUT THE PROJECT:
+      ABOUT THE PROJECT:
+
      * The project uses socket instead of servlets. Commands should be given through the console
      *
      * 1. The persistence layer class contains the JDBC connection
@@ -16,11 +17,10 @@
      *   made at least 1 order. Each customer will have their own folder within which their orders will be present.
      *
      * 7. "DataImport" class has the logic for converting a csv file into a POJO.
-     *
-     *
-     *
-     * FOLDERS:
-     *
+    
+     
+      FOLDERS:
+     
      * a) protobuf - This directory contains the ".proto" message along with a shell command. When the shell command is
      * executed, the builder classes are generated in the protobuilder package.
      *
@@ -37,4 +37,4 @@
      * f) DATA/IMPORT - contains 2 directories "Customers" & "Products". If a CSV file containing the list of
      *   Customer and Products are placed in the respective folders, the admin will have an option to import them
      *   when he logs in
-     */
+
