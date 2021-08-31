@@ -18,12 +18,12 @@ public class DataImport extends PersistenceLayer {
     public void importCustomers () {
 
         String filePath = "/Users/roshan-6965/Desktop/Z-kart/src/main/java/Zkart/data/import/customers/customers.csv";
-
+        Connection connection = null;
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line;
 
-            Connection connection = connect();
+            connection = connect();
             reader.readLine(); // Skips header by reading the first line before entering the while loop.
 
             String query = "insert into Customers (name, email, password, phoneNumber) values (?,?,?,?)";
@@ -58,18 +58,27 @@ public class DataImport extends PersistenceLayer {
             System.out.println("\n"+e.getMessage());
         }
         catch (IOException | SQLException e) { e.printStackTrace(); }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void importProducts () {
 
         String filePath = "/Users/roshan-6965/Desktop/Z-kart/src/main/java/Zkart/data/import/products/products.csv";
-
+        Connection connection = null;
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
             String line;
             reader.readLine(); // Skips header
 
-                Connection connection = connect();
+             connection = connect();
 
                 String query = "insert into Products (category, brand, model, stock, price) values (?,?,?,?,?)";
                 int rowsUpdated = 0;
@@ -107,6 +116,14 @@ public class DataImport extends PersistenceLayer {
 
         catch (IOException | SQLException e) {
             e.printStackTrace();
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }

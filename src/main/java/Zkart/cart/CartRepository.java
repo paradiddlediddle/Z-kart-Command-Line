@@ -15,9 +15,9 @@ public class CartRepository extends PersistenceLayer {
     public void addCartItemsToDB (CartItem cartItem) {
 
         String query = "insert into CartItems (sNo, customer_id, product_id, quantity, productRate, lineTotal) values (?,?,?,?,?,?)";
-
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             preparedStatement.setInt(1, cartItem.getsNo());
@@ -35,16 +35,26 @@ public class CartRepository extends PersistenceLayer {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-
-
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
+
+
+
     public List<CartItem> getCartItemsByCustomerID ( long customerID ) {
 
         List<CartItem> cartList = new ArrayList<>();
         String query = "select * from CartItems where customer_id=" + customerID;
-
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -70,19 +80,28 @@ public class CartRepository extends PersistenceLayer {
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
             return null;
         }
 
-    }
 
     public void clearCartByCustomerID ( long customerID ) {
 
         List<CartItem> cartList = new ArrayList<>();
 
         String query = "delete from CartItems where customer_id=" + customerID;
-
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             preparedStatement.executeUpdate();
@@ -94,9 +113,17 @@ public class CartRepository extends PersistenceLayer {
         }
         catch (SQLException exception) {
             exception.printStackTrace();
+        }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         }
-    }
-
 
 }

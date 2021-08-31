@@ -21,8 +21,9 @@ public class CustomerRepository extends PersistenceLayer {
 
         String valueFromDB = null;
         String query = "select * from Customers where email='"+email+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -38,6 +39,15 @@ public class CustomerRepository extends PersistenceLayer {
             exception.printStackTrace();
             return null;
         }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public List<Customer> fetchAllCustomers ()  {
@@ -45,8 +55,9 @@ public class CustomerRepository extends PersistenceLayer {
         Customer customer;
         //Get Customer basic details
         String query = "select * from Customers";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -77,6 +88,15 @@ public class CustomerRepository extends PersistenceLayer {
             exception.printStackTrace();
             return null;
         }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return customers;
     }
 
@@ -85,8 +105,9 @@ public class CustomerRepository extends PersistenceLayer {
         Customer customer = null;
         //Get Customer basic details
         String query = "select * from Customers where email='"+email+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -115,6 +136,15 @@ public class CustomerRepository extends PersistenceLayer {
             exception.printStackTrace();
             return null;
         }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return customer;
     }
 
@@ -122,8 +152,9 @@ public class CustomerRepository extends PersistenceLayer {
         Customer customer = null;
         //Get Customer basic details
         String query = "select * from Customers where id='"+id+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -154,6 +185,15 @@ public class CustomerRepository extends PersistenceLayer {
             exception.printStackTrace();
             return null;
         }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return customer;
     }
 
@@ -161,8 +201,9 @@ public class CustomerRepository extends PersistenceLayer {
 
         String valueFromDB = null;
         String query = "select * from Customers where password='"+encryptedPassword+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -178,6 +219,15 @@ public class CustomerRepository extends PersistenceLayer {
             exception.printStackTrace();
             return null;
         }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 
@@ -186,8 +236,9 @@ public class CustomerRepository extends PersistenceLayer {
 
         String query = "insert into Customers (name, email, password, phoneNumber) values (?,?,?,?)";
         int rowsUpdated = 0;
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, email);
@@ -204,6 +255,15 @@ public class CustomerRepository extends PersistenceLayer {
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

@@ -16,9 +16,9 @@ public class InvoiceRepository extends PersistenceLayer {
         List<Invoice> orderHistory = new ArrayList<>();
 
         String query = "select * from Invoices where customer_id="+customerID;
-
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -51,8 +51,9 @@ public class InvoiceRepository extends PersistenceLayer {
         List<LineItem> lineItemsList = new ArrayList<>();
         String query = "select * from LineItems where invoice_id="+invoiceID;
 
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -76,6 +77,14 @@ public class InvoiceRepository extends PersistenceLayer {
         } catch (SQLException exception) {
             exception.printStackTrace();
             return null;
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
@@ -84,8 +93,9 @@ public class InvoiceRepository extends PersistenceLayer {
 
         String query = "insert into LineItems (invoice_id, product_id, quantity, productRate, lineTotal) values (?,?,?,?,?)";
 
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             preparedStatement.setLong(1,lineItem.getInvoiceID());
@@ -102,18 +112,26 @@ public class InvoiceRepository extends PersistenceLayer {
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
 
     }
 
     public void updateInvoiceInDBWithCompleteDetails (Invoice invoice) {
-
+        Connection connection = null;
         try {
             String query = "update Invoices set date=?, customer_id=?, " +
                     "subTotal=?, discount=?, total=? where id = ?";
 
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             preparedStatement.setString(1, invoice.getDate());
@@ -129,6 +147,14 @@ public class InvoiceRepository extends PersistenceLayer {
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
@@ -136,11 +162,11 @@ public class InvoiceRepository extends PersistenceLayer {
     public Invoice addAndFetchInvoice (Invoice invoiceWithoutID) {
 
         Invoice invoiceWithID = null;
-
+        Connection connection = null;
         try {
             String query = "insert into Invoices (date, customer_id) values (?,?)";
 
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             preparedStatement.setString(1, invoiceWithoutID.getDate());
@@ -153,12 +179,20 @@ public class InvoiceRepository extends PersistenceLayer {
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         try {
             String query = "select * from Invoices where customer_id="+0;
 
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -177,13 +211,21 @@ public class InvoiceRepository extends PersistenceLayer {
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         try {
 
             String query = "update Invoices set customer_id=?, date=? where id = ?";
 
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             preparedStatement.setLong(1, invoiceWithoutID.getCustomerID());
@@ -199,6 +241,14 @@ public class InvoiceRepository extends PersistenceLayer {
 
         catch (SQLException exception) {
             exception.printStackTrace();
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return invoiceWithID;

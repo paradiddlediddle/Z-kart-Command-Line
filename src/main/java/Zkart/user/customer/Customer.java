@@ -45,7 +45,6 @@ public class Customer extends User {
     //Methods
     public void welcomeScreen (Customer customer) {
         System.out.println("\n-x-x- Home Screen -x-x-");
-        MainMenu mainMenu = new MainMenu();
         manageCustomerDeals(); // Alter deals before creating a shopping session
         Shopping shopping = new Shopping(customer);
         System.out.println("\n1. Shop\n2. Order History\n3. Logout");
@@ -55,12 +54,11 @@ public class Customer extends User {
         switch (userSelection) {
             case 1: shopping.shoppingScreen(); break;
             case 2: displayCustomerOrders(); welcomeScreen(customer); break;
-            case 3: mainMenu.mainScreen(); break;
+            case 3: logout(); break;
         }
     }
 
     // If there are any new deals added and the customer doesn't have them, it will be added to his list
-
     private void manageCustomerDeals () {
         assignDealsToCustomer(); //Assigns deal and set the status as Available.
         setStatusToExpiredDeals(); //Expires the unused deals after validity expires.
@@ -119,7 +117,7 @@ public class Customer extends User {
         InvoiceRepository invoiceRepository = new InvoiceRepository();
         List<Invoice> customerOrders = invoiceRepository.fetchCustomerOrderHistory(this.getId());
 
-        if (customerOrders != null) {
+        if (customerOrders.size() >  0) {
 
             int invoiceCount =1;
             for (Invoice invoice: customerOrders) {
@@ -173,6 +171,13 @@ public class Customer extends User {
             totalPurchaseAmount+= invoice.getTotal();
         }
         return totalPurchaseAmount;
+    }
+
+    public void logout () {
+        System.out.println("Logging out now...");
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.mainScreen();
+
     }
 
 

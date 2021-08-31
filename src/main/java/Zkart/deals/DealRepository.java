@@ -16,8 +16,9 @@ public class DealRepository extends PersistenceLayer {
 
         String query = "insert into Deals (name, discountCode, discountPercentage, ordersAfterDealExpires) values (?,?,?,?)";
         int rowsUpdated = 0;
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
             preparedStatement.setString(1, deal.getDealName());
             preparedStatement.setString(2, deal.getDiscountCode());
@@ -41,8 +42,9 @@ public class DealRepository extends PersistenceLayer {
 
         String query = "insert into CustomerDeals (customer_id, deal_id, lastValidInvoiceNumber, status) values (?,?,?,?)";
         int rowsUpdated = 0;
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
             preparedStatement.setLong(1, customerID);
             preparedStatement.setLong(2, deal.getId());
@@ -64,8 +66,9 @@ public class DealRepository extends PersistenceLayer {
         List<Deal> customerDeals = new ArrayList<>();
         //Get Customer basic details
         String query = "select * from CustomerDeals where customer_id='"+customerID+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -92,8 +95,9 @@ public class DealRepository extends PersistenceLayer {
     public Deal getDealByDealID (long id) {
         Deal deal = null;
         String query = "select * from Deals where id='"+id+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -111,6 +115,14 @@ public class DealRepository extends PersistenceLayer {
         catch (SQLException exception) {
             exception.printStackTrace();
             return null;
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return deal;
     }
@@ -120,8 +132,9 @@ public class DealRepository extends PersistenceLayer {
         List<Deal> allDeals = new ArrayList<>();
 
         String query = "select * from Deals";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -141,6 +154,14 @@ public class DealRepository extends PersistenceLayer {
         catch (SQLException exception) {
             exception.printStackTrace();
             return null;
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return allDeals;
@@ -151,8 +172,9 @@ public class DealRepository extends PersistenceLayer {
         String query = "UPDATE CustomerDeals SET status= '"+status+"' " +
                 "WHERE (deal_id = '"+deal.getId()+"' and customer_id = '"+customerID+"')";
         int rowsUpdated = 0;
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             preparedStatement.executeUpdate();
@@ -163,6 +185,14 @@ public class DealRepository extends PersistenceLayer {
         }
         catch (SQLException exception) {
             exception.printStackTrace();
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -170,8 +200,9 @@ public class DealRepository extends PersistenceLayer {
         Deal deal = null;
         int deletedRows = 0;
         String query = "delete from Deals where id='"+id+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             deletedRows += preparedStatement.executeUpdate();
@@ -185,15 +216,16 @@ public class DealRepository extends PersistenceLayer {
         catch (SQLException exception) {
             exception.printStackTrace();
             return null;
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return deal;
     }
-
-
-
-
-
-
-
 
 }

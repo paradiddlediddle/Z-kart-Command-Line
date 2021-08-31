@@ -51,6 +51,7 @@ public class Backup {
     public void purchaseHistory () {
         ExecutorService executorService = Executors.newCachedThreadPool();
         executorService.execute(new PurchaseHistoryBackup());
+        executorService.shutdown();
     }
 
 

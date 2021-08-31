@@ -15,8 +15,9 @@ public class AdminRepository extends PersistenceLayer {
 
         String query = "insert into Admin (email, password) values (?,?)";
         int rowsUpdated = 0;
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
             preparedStatement.setString(1, email);
             preparedStatement.setString(2, encryptedPassword);
@@ -31,6 +32,14 @@ public class AdminRepository extends PersistenceLayer {
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -38,8 +47,9 @@ public class AdminRepository extends PersistenceLayer {
 
         String query = "UPDATE `Admin` SET `password` = '"+encryptedPassword+"' WHERE (`email` = '"+email+"')";
         int rowsUpdated = 0;
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             rowsUpdated += preparedStatement.executeUpdate();
@@ -50,6 +60,14 @@ public class AdminRepository extends PersistenceLayer {
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
@@ -58,8 +76,9 @@ public class AdminRepository extends PersistenceLayer {
         Admin admin = null;
         //Get Customer basic details
         String query = "select * from Admin where email='"+adminEmail+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -79,6 +98,15 @@ public class AdminRepository extends PersistenceLayer {
             exception.printStackTrace();
             return null;
         }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         return admin;
     }
 
@@ -86,8 +114,9 @@ public class AdminRepository extends PersistenceLayer {
 
         String valueFromDB = null;
         String query = "select * from Admin where email='"+email+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -103,14 +132,24 @@ public class AdminRepository extends PersistenceLayer {
             exception.printStackTrace();
             return null;
         }
+        finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public List<Admin> fetchAllAdmins ()  {
 
         List<Admin> adminsList = new ArrayList<>();
         String query = "select * from Admin";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -135,6 +174,14 @@ public class AdminRepository extends PersistenceLayer {
         } catch (SQLException exception) {
             exception.printStackTrace();
             return null;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -143,8 +190,9 @@ public class AdminRepository extends PersistenceLayer {
 
         String valueFromDB = null;
         String query = "select * from Admin where password='"+encryptedPassword+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -159,6 +207,14 @@ public class AdminRepository extends PersistenceLayer {
         } catch (SQLException exception) {
             exception.printStackTrace();
             return null;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -166,8 +222,9 @@ public class AdminRepository extends PersistenceLayer {
 
         String valueFromDB = null;
         String query = "select * from Admin where email='"+email+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -182,6 +239,14 @@ public class AdminRepository extends PersistenceLayer {
         } catch (SQLException exception) {
             exception.printStackTrace();
             return null;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }

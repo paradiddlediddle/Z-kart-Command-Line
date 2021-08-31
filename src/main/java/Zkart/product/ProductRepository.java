@@ -18,8 +18,9 @@ public class ProductRepository extends PersistenceLayer {
         else { query = "select * from products where stock > 1"; }
 
         List<Product> inventory = new ArrayList<>();
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -44,6 +45,14 @@ public class ProductRepository extends PersistenceLayer {
         } catch (SQLException exception) {
             exception.printStackTrace();
             return null;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
@@ -53,8 +62,9 @@ public class ProductRepository extends PersistenceLayer {
 
         List<Product> lowStock = new ArrayList<>();
         String query = "select * from Products where stock <'"+reorderPoint+"'";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -79,6 +89,14 @@ public class ProductRepository extends PersistenceLayer {
         } catch (SQLException exception) {
             exception.printStackTrace();
             return null;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
@@ -87,8 +105,9 @@ public class ProductRepository extends PersistenceLayer {
 
         Product product = null;
         String query = "select * from Products where id="+productID+"";
+        Connection connection = null;
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -112,6 +131,14 @@ public class ProductRepository extends PersistenceLayer {
         } catch (SQLException exception) {
             exception.printStackTrace();
             return null;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
@@ -119,9 +146,10 @@ public class ProductRepository extends PersistenceLayer {
     public void updateStockByID (Long id, int newQuantity) {
 
         String query = "UPDATE Products SET `stock` = '"+newQuantity+"' WHERE (`id` = '"+id+"')";
+        Connection connection = null;
 
         try {
-            Connection connection = connect();
+            connection = connect();
             PreparedStatement preparedStatement = connect().prepareStatement(query);
 
             int rowsUpdated = preparedStatement.executeUpdate();
@@ -133,8 +161,15 @@ public class ProductRepository extends PersistenceLayer {
 
         } catch (SQLException exception) {
             exception.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-
 
     }
 
